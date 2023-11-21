@@ -28,7 +28,7 @@ let package = Package(
     .target(
       name: "DocCHooks",
       dependencies: [
-        .product(name: "Hooks", package: "swiftui-hooks")
+        .product(name: "Hooks", package: "swiftui-hooks"),
       ]
     ),
     .testTarget(
