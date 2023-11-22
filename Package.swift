@@ -6,8 +6,8 @@ import PackageDescription
 let package = Package(
   name: "DocCHooks",
   platforms: [
-    .iOS(.v14),
-    .macOS(.v11),
+    .iOS(.v15),
+    .macOS(.v12),
     .tvOS(.v13),
     .watchOS(.v7),
     .visionOS(.v1)
@@ -21,6 +21,10 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/ra1028/swiftui-hooks", branch: "main"),
     .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.3.0"),
+    .package(url: "https://github.com/pointfreeco/swift-identified-collections", from: "1.0.0"),
+    .package(url: "https://github.com/FullStack-Swift/swift-networking", branch: "main"),
+    .package(url: "https://github.com/realm/realm-swift", from: "10.44.0"),
+    .package(url: "https://github.com/pointfreeco/swift-case-paths", from: "1.0.0"),
   ],
   targets: [
     // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -29,6 +33,11 @@ let package = Package(
       name: "DocCHooks",
       dependencies: [
         .product(name: "Hooks", package: "swiftui-hooks"),
+        .product(name: "IdentifiedCollections", package: "swift-identified-collections"),
+        .product(name: "CombineRequest", package: "swift-networking"),
+        .product(name: "CombineWebSocket", package: "swift-networking"),
+        .product(name: "RealmSwift", package: "realm-swift"),
+        .product(name: "CasePaths", package: "swift-case-paths"),
       ],
       resources: [
         .process("Resources")
