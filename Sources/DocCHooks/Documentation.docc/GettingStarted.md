@@ -12,7 +12,7 @@ SwiftUI Hooks is a SwiftUI implementation of React Hooks. Brings the state and l
 
 Code Sample
 
-## Overview
+## How do you use a Hook function?
 
 ### useState
 
@@ -51,7 +51,10 @@ Button("Increment") {
 ### useEffect
 
 ```swift
-func useEffect(_ updateStrategy: HookUpdateStrategy? = nil, _ effect: @escaping () -> (() -> Void)?)
+func useEffect(
+_ updateStrategy: HookUpdateStrategy? = nil,
+_ effect: @escaping () -> (() -> Void)?
+)
 ```
 
 A hook to use a side effect function that is called the number of times according to the strategy specified with updateStrategy.
@@ -73,7 +76,10 @@ useEffect {
 ### useLayoutEffect
 
 ```swift
-func useLayoutEffect(_ updateStrategy: HookUpdateStrategy? = nil, _ effect: @escaping () -> (() -> Void)?)
+func useLayoutEffect(
+_ updateStrategy: HookUpdateStrategy? = nil,
+_ effect: @escaping () -> (() -> Void)?
+)
 ```
 
 A hook to use a side effect function that is called the number of times according to the strategy specified with updateStrategy.
@@ -92,7 +98,10 @@ useLayoutEffect {
 ### useMemo
 
 ```swift
-func useMemo<Value>(_ updateStrategy: HookUpdateStrategy, _ makeValue: @escaping () -> Value) -> Value
+func useMemo<Value>(
+_ updateStrategy: HookUpdateStrategy,
+_ makeValue: @escaping () -> Value
+) -> Value
 ```
 
 A hook to use memoized value preserved until it is updated at the timing determined with given updateStrategy.
@@ -126,8 +135,9 @@ Button("Save text") {
 
 ```swift
 func useReducer<State, Action>(
-_ reducer: @escaping (State, Action
-) -> State, initialState: State) -> (state: State, dispatch: (Action) -> Void)
+_ reducer: @escaping (State, Action) -> State,
+initialState: State
+) -> (state: State, dispatch: (Action) -> Void)
 
 ```
 
@@ -200,7 +210,10 @@ let (phase, perform) = useAsyncPerform {
 ### usePublisher
 
 ```swift
-func usePublisher<P: Publisher>(_ updateStrategy: HookUpdateStrategy, _ makePublisher: @escaping () -> P) -> AsyncPhase<P.Output, P.Failure>
+func usePublisher<P: Publisher>(
+_ updateStrategy: HookUpdateStrategy,
+_ makePublisher: @escaping () -> P
+) -> AsyncPhase<P.Output, P.Failure>
 
 ```
 A hook to use the most recent phase of asynchronous operation of the passed publisher.

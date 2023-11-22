@@ -1,4 +1,5 @@
 import XCTest
+import Hooks
 @testable import DocCHooks
 
 final class DocCHooksTests: XCTestCase {

@@ -29,10 +29,17 @@ let package = Package(
       name: "DocCHooks",
       dependencies: [
         .product(name: "Hooks", package: "swiftui-hooks"),
+      ],
+      resources: [
+        .process("Resources")
       ]
     ),
     .testTarget(
       name: "DocCHooksTests",
-      dependencies: ["DocCHooks"]),
+      dependencies: [
+        "DocCHooks",
+        .product(name: "Hooks", package: "swiftui-hooks"),
+      ]
+    ),
   ]
 )
