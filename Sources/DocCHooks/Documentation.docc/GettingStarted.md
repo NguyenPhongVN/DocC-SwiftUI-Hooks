@@ -8,7 +8,9 @@ A SwiftUI implementation of React Hooks. Enhances reusability of stateful logic 
 
 ## Overview
 
-SwiftUI Hooks is a SwiftUI implementation of React Hooks. Brings the state and lifecycle into the function view, without depending on elements that are only allowed to be used in struct views such as @State or @ObservedObject. It allows you to reuse stateful logic between views by building custom hooks composed with multiple hooks. Furthermore, hooks such as useEffect also solve the problem of lack of lifecycles in SwiftUI.
+SwiftUI Hooks là một phiên bản được dịch ra của React Hooks, hắn đưa State và lifecycle vào trong View mà không phụ thuộc vào các element chỉ được phép sử dụng trong struct View  như @State hoặc @ObservedObject.
+Hắn cho phép bạn sử dụng lại logic trạng thái giữa các View bằng cách xây dựng các hook (móc,gắn) tùy chỉnh được tạo bằng nhiều hook (móc,gắn).
+Hơn nữa, các hook như useEffect cũng giải quyết được vấn đề thiếu vòng đời trong SwiftUI.
 
 Code Sample
 
@@ -21,8 +23,8 @@ func useState<State>(_ initialState: State) -> Binding<State>
 func useState<State>(_ initialState: @escaping () -> State) -> Binding<State>
 ```
 
-A hook to use a Binding<State> wrapping current state to be updated by setting a new state to wrappedValue.
-Triggers a view update when the state has been changed.
+Một hook để sử dụng State current bao bọc  Binding<State> cần được cập nhật bằng cách đặt trạng thái mới thành wrappedValue.
+Kích hoạt cập nhật View khi State đã được thay đổi.
 
 ```swift
 
@@ -34,7 +36,7 @@ Button("Increment") {
 
 ```
 
-If the initial state is the result of an expensive computation, you may provide a closure instead. The closure will be executed once, during the initial render.
+Nếu State ban đầu là kết quả của một phép tính, thay vào đó bạn có thể cung cấp một closure. Việc đóng sẽ được thực hiện một lần, trong lần render đầu tiên.
 
 ```swift
 let count = useState {
@@ -59,7 +61,7 @@ _ effect: @escaping () -> (() -> Void)?
 
 A hook to use a side effect function that is called the number of times according to the strategy specified with updateStrategy.
 Optionally the function can be cancelled when this hook is disposed or when the side-effect function is called again.
-Note that the execution is deferred until after ohter hooks have been updated.
+Lưu ý rằng việc thực thi được hoãn lại cho đến khi các hook khác được cập nhật.
 
 ```swift
 useEffect {
