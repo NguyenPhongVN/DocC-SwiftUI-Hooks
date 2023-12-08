@@ -59,9 +59,10 @@ _ effect: @escaping () -> (() -> Void)?
 )
 ```
 
+useEffect là một Hook cho phép bạn đồng bộ hóa một component với hệ thống bên ngoài.
 A hook to use a side effect function that is called the number of times according to the strategy specified with updateStrategy.
-Optionally the function can be cancelled when this hook is disposed or when the side-effect function is called again.
-Lưu ý rằng việc thực thi được hoãn lại cho đến khi các hook khác được cập nhật.
+Function này có thể bị hủy khi hook này được xử lý hoặc khi function side-effect được gọi lại.
+Lưu ý rằng việc thực hiện sau khi render View
 
 ```swift
 useEffect {
@@ -71,6 +72,11 @@ useEffect {
     print("Do cleanup")
   }
 }
+
+/// - Parameters:
+///   - updateStrategy: Một strategy that determines when to re-call the given side effect function.
+///   - effect: A closure that typically represents a side-effect.
+///             Nó có thể trả về một closure để thực hiện điều gì đó khi hook này được ngắt kết nối khỏi view hoặc khi hàm side-effect được gọi lại.
 
 ```
 
@@ -85,8 +91,8 @@ _ effect: @escaping () -> (() -> Void)?
 ```
 
 A hook to use a side effect function that is called the number of times according to the strategy specified with updateStrategy.
-Optionally the function can be cancelled when this hook is unmount from the view tree or when the side-effect function is called again.
-The signature is identical to useEffect, but this fires synchronously when the hook is called.
+Tùy chọn, function này có thể bị hủy khi hook này được ngắt kết nối khỏi tree view hoặc khi function side-effect được gọi lại.
+The signature này giống hệt với useEffect, nhưng signature này kích hoạt đồng bộ khi hook được gọi. 
 
 
 ```swift
@@ -107,6 +113,7 @@ _ makeValue: @escaping () -> Value
 ```
 
 A hook to use memoized value preserved until it is updated at the timing determined with given updateStrategy.
+lưu trữ kết quả tính toán
 
 
 ```swift
@@ -123,7 +130,8 @@ func useRef<T>(_ initialValue: T) -> RefObject<T>
 ```
 
 A hook to use a mutable ref object storing an arbitrary value.
-The essential of this hook is that setting a value to current doesn't trigger a view update.
+object `ref` có thể thay đổi lưu trữ một giá trị tùy ý.
+Điều cốt yếu của hook này là việc đặt giá trị thành `current` sẽ không kích hoạt update view.
 
 ```swift
 let value = useRef("text")  // RefObject<String>
@@ -144,7 +152,7 @@ initialState: State
 ```
 
 A hook to use the state returned by the passed reducer, and a dispatch function to send actions to update the state.
-Triggers a view update when the state has been changed.
+Kích hoạt update view khi state đã được thay đổi.
 
 ```swift
 enum Action {
@@ -181,6 +189,7 @@ _ operation: @escaping () async throws -> Output
 ```
 A hook to use the most recent phase of asynchronous operation of the passed function.
 The function will be performed at the first update and will be re-performed according to the given updateStrategy.
+Chức năng sẽ được thực hiện ở lần update đầu tiên và sẽ được thực hiện lại theo updateStrategy đã cho.
 
 ```swift
 let phase = useAsync(.once) {
