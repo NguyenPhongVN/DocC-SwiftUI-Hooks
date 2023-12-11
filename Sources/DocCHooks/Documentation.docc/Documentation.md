@@ -24,7 +24,7 @@ SwiftUI Hooks là một phiên bản được dịch ra của React Hooks, hắn
 Nó cho phép bạn sử dụng lại logic trạng thái giữa các View bằng cách xây dựng các hook (móc) tùy chỉnh được tạo bằng nhiều hook (móc).
 Hơn nữa, các hook như useEffect cũng giải quyết được vấn đề thiếu vòng đời trong SwiftUI.
 
-API và thông số kỹ thuật hành vi của SwiftUI Hook hoàn toàn dựa trên React Hook, vì vậy bạn có thể tận dụng kiến thức về ứng dụng web để làm lợi thế cho mình.
+API và behavioral specs (thông số kỹ thuật hành vi) của SwiftUI Hook hoàn toàn dựa trên React Hook, vì vậy bạn có thể tận dụng kiến thức về ứng dụng web để làm lợi thế cho mình.
 
 Hiện đã có rất nhiều tài liệu về React Hooks, các bạn có thể tham khảo và tìm hiểu thêm về Hooks.
 

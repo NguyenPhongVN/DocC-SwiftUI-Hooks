@@ -60,7 +60,7 @@ _ effect: @escaping () -> (() -> Void)?
 ```
 
 useEffect là một Hook cho phép bạn đồng bộ hóa một component với hệ thống bên ngoài.
-A hook to use a side effect function that is called the number of times according to the strategy specified with updateStrategy.
+A hook to use a side effect function that is called the number of times according to the strategy specified with `updateStrategy`.
 Function này có thể bị hủy khi hook này được xử lý hoặc khi function side-effect được gọi lại.
 Lưu ý rằng việc thực hiện sau khi render View
 
@@ -90,7 +90,7 @@ _ effect: @escaping () -> (() -> Void)?
 )
 ```
 
-A hook to use a side effect function that is called the number of times according to the strategy specified with updateStrategy.
+A hook to use a side effect function that is called the number of times according to the strategy specified with `updateStrategy`.
 Tùy chọn, function này có thể bị hủy khi hook này được ngắt kết nối khỏi tree view hoặc khi function side-effect được gọi lại.
 The signature này giống hệt với useEffect, nhưng signature này kích hoạt đồng bộ khi hook được gọi. 
 
@@ -112,7 +112,7 @@ _ makeValue: @escaping () -> Value
 ) -> Value
 ```
 
-A hook to use memoized value preserved until it is updated at the timing determined with given updateStrategy.
+A hook to use memoized value preserved until it is updated at the timing determined with given `updateStrategy`.
 lưu trữ kết quả tính toán
 
 
@@ -188,8 +188,8 @@ _ operation: @escaping () async throws -> Output
 
 ```
 A hook to use the most recent phase of asynchronous operation of the passed function.
-The function will be performed at the first update and will be re-performed according to the given updateStrategy.
-Chức năng sẽ được thực hiện ở lần update đầu tiên và sẽ được thực hiện lại theo updateStrategy đã cho.
+The function will be performed at the first update and will be re-performed according to the given `updateStrategy`.
+Chức năng sẽ được thực hiện ở lần update đầu tiên và sẽ được thực hiện lại theo `updateStrategy` đã cho.
 
 ```swift
 let phase = useAsync(.once) {
@@ -210,6 +210,7 @@ _ operation: @escaping @MainActor () async throws -> Output
 
 ```
 A hook to use the most recent phase of the passed asynchronous operation, and a perform function to call the it at arbitrary timing.
+Bất đồng bộ và một hàm perform
 
 ```swift
 let (phase, perform) = useAsyncPerform {
@@ -228,7 +229,8 @@ _ makePublisher: @escaping () -> P
 
 ```
 A hook to use the most recent phase of asynchronous operation of the passed publisher.
-The publisher will be subscribed at the first update and will be re-subscribed according to the given updateStrategy.
+The publisher will be subscribed at the first update and will be re-subscribed according to the given `updateStrategy`.
+publisher sẽ được khởi tạo ở lần cập nhật đầu tiên và sẽ được re-subscribed theo `updateStrategy` nhất định.
 
 ```swift
 let phase = usePublisher(.once) {
@@ -244,7 +246,7 @@ _ makePublisher: @escaping () -> P
 ) -> (phase: AsyncPhase<P.Output, P.Failure>, subscribe: () -> Void)
 
 ```
-A hook to use the most recent phase of asynchronous operation of the passed publisher, and a subscribe function to subscribe to it at arbitrary timing.
+A hook to use the most recent phase of asynchronous operation of the passed publisher, and a `subscribe` function to subscribe to it at arbitrary timing.
 
 ```swift
 let (phase, subscribe) = usePublisherSubscribe {
@@ -259,6 +261,7 @@ func useEnvironment<Value>(_ keyPath: KeyPath<EnvironmentValues, Value>) -> Valu
 ```
 
 A hook to use environment value passed through the view tree without @Environment property wrapper.
+environment được truyền qua tree view mà không wrapper thuộc tính `@Environment`.
 
 ```swift
 let colorScheme = useEnvironment(\.colorScheme)  // ColorScheme
@@ -268,8 +271,8 @@ let colorScheme = useEnvironment(\.colorScheme)  // ColorScheme
 ```swift
 func useContext<T>(_ context: Context<T>.Type) -> T
 ```
-A hook to use current context value that is provided by Context<T>.Provider.
-The purpose is identical to use Context<T>.Consumer.
+A hook to use current context value that is provided by `Context<T>.Provider`.
+The purpose is identical to use `Context<T>.Consumer`.
 See Context section for more details.
 
 ```swift
