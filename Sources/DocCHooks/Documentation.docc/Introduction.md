@@ -6,7 +6,6 @@ A SwiftUI implementation of React Hooks. Enhances reusability of stateful logic 
   @PageImage(purpose: card, source: "gettingStarted-card", alt: "The profile images for a regular sloth and an ice sloth.")
 }
 
-
 ## Overview
 
 SwiftUI Hooks is a SwiftUI implementation of React Hooks. Brings the state and lifecycle into the function view, without depending on elements that are only allowed to be used in struct views such as @State or @ObservedObject.

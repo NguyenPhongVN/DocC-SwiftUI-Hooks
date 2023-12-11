@@ -14,7 +14,7 @@ import Hooks
 ///
 /// ```
 ///
-/// It's similar ``useRef(_:)-6e7ga``, but using propertyWrapper instead.
+/// It's similar `useRef(_:)`, but using propertyWrapper instead.
 
 @propertyWrapper
 public struct HRef<Node> {

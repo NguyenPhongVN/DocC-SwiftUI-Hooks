@@ -31,20 +31,22 @@ There're already a bunch of documentations on React Hooks, so you can refer to i
 - [React Hooks Documentation](https://reactjs.org/docs/hooks-intro.html)  
 - [Youtube Video](https://www.youtube.com/watch?v=dpw9EHDh2bM)
 
-### Featured
+### Section
 
 @Links(visualStyle: detailedGrid) {
+  - <doc:BeforeStarted>
   - <doc:Introduction>
   - <doc:GettingStarted>
   - <doc:BuildingYourOwnHooks>
   - <doc:RulesHooks>
+  - <doc:ShouldWeUsingHooks>
 }
 
 
 ## Topics
 
 ### Essentials
-
+- <doc:MeetHooks>
 - <doc:TodoHookBasic>
 - <doc:TodoHookNetwork>
 - <doc:TodoHookAdvance>

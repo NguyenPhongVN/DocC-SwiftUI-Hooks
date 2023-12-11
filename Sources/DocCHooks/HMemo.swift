@@ -18,7 +18,7 @@ import Foundation
 ///
 ///```
 ///
-/// It's similar ``useMemo(_:)-4ans9`` and ``useMemo(_:)-5fu7z``, but using propertyWrapper instead.
+/// It's similar `useMemo(_:)`, but using propertyWrapper instead.
 
 @propertyWrapper
 public struct HMemo<Node> {

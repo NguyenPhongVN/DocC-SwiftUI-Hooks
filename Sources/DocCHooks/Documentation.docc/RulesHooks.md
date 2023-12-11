@@ -1,6 +1,6 @@
 # RulesHooks
 
-A SwiftUI implementation of React Hooks. Enhances reusability of stateful logic and gives state and lifecycle to function view.
+Hooks are Swift function programming, but you need to follow two rules when using them.
 
 @Metadata {
   @PageImage(purpose: card, source: "gettingStarted-card", alt: "The profile images for a regular sloth and an ice sloth.")
@@ -20,10 +20,12 @@ Do not call Hooks inside conditions or loops. The order in which hook is called 
 ```swift
 @ViewBuilder
 func counterButton() -> some View {
-  let count = useState(0)  // 🟢 Uses hook at the top level
+  // 🟢 Uses hook at the top level
+  @HState
+  var count = 0
 
-  Button("You clicked \(count.wrappedValue) times") {
-    count.wrappedValue += 1
+  Button("You clicked \(count) times") {
+    count += 1
   }
 }
 ```
@@ -32,7 +34,9 @@ func counterButton() -> some View {
 @ViewBuilder
 func counterButton() -> some View {
   if condition {
-    let count = useState(0)  // 🔴 Uses hook inside condition.
+    // 🔴 Uses hook inside condition.
+    @HState
+    var count = 0
 
     Button("You clicked \(count.wrappedValue) times") {
       count.wrappedValue += 1
@@ -49,7 +53,9 @@ A view that conforms to the HookView protocol will automatically be enclosed in 
 ```swift
 struct CounterButton: HookView {  // 🟢 `HookView` is used.
   var hookBody: some View {
-    let count = useState(0)
+
+    @HState
+    var count = 0
 
     Button("You clicked \(count.wrappedValue) times") {
       count.wrappedValue += 1
@@ -62,10 +68,12 @@ struct CounterButton: HookView {  // 🟢 `HookView` is used.
 ```swift
 func counterButton() -> some View {
   HookScope {  // 🟢 `HookScope` is used.
-    let count = useState(0)
+    
+    @HState
+    var count = 0
 
-    Button("You clicked \(count.wrappedValue) times") {
-      count.wrappedValue += 1
+    Button("You clicked \(count) times") {
+      count += 1
     }
   }
 }
@@ -80,10 +88,11 @@ struct ContentView: HookView {
 // 🟢 Called from `HookView.hookBody` or `HookScope`.
   @ViewBuilder
   var counterButton: some View {
-    let count = useState(0)
+    @HState
+    var count = 0
 
-    Button("You clicked \(count.wrappedValue) times") {
-      count.wrappedValue += 1
+    Button("You clicked \(count) times") {
+      count += 1
     }
   }
 }
@@ -93,10 +102,11 @@ struct ContentView: HookView {
 // 🔴 Neither `HookScope` nor `HookView` is used, and is not called from them.
 @ViewBuilder
 func counterButton() -> some View {
-  let count = useState(0)
+  @HState
+  var count = 0
 
-  Button("You clicked \(count.wrappedValue) times") {
-    count.wrappedValue += 1
+  Button("You clicked \(count) times") {
+    count += 1
   }
 }
 ```

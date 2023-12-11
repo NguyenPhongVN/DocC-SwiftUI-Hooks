@@ -1,4 +1,4 @@
-# TotoHookNetwork App
+# TodoHookNetwork App
 
 TodoHookAdvance into an iOS app for creating todolist.
 
@@ -10,9 +10,9 @@ TodoHookAdvance into an iOS app for creating todolist.
   @PageImage(
              purpose: card, 
              source: "slothy-card", 
-             alt: "Two screenshots showing the Slothy app. The first screenshot shows a sloth map and the second screenshot shows a sloth power picker.")
+             alt: "")
 }
 
 ## Overview
 
-This sample creates _TodoList_
+This sample creates _TodoList_ with Network.

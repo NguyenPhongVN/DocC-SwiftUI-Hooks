@@ -254,6 +254,8 @@ let colorScheme = useEnvironment(\.colorScheme)  // ColorScheme
 
 ```
 
+### useContext
+
 ```swift
 func useContext<T>(_ context: Context<T>.Type) -> T
 ```

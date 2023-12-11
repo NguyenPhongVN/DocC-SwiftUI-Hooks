@@ -24,4 +24,6 @@ sudo swift package --allow-writing-to-directory ./docs \
 
 ```
 
-[Doc Hooks](https://nguyenphongvn.github.io/DocC-SwiftUI-Hooks/documentation/docchooks/)
+[Documentation](https://nguyenphongvn.github.io/DocC-SwiftUI-Hooks/documentation/docchooks/)
+
+[Tutorials](https://nguyenphongvn.github.io/DocC-SwiftUI-Hooks/tutorials/meethooks/)

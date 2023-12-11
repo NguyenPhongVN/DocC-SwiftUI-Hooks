@@ -1,0 +1,22 @@
+@Tutorials(name: "The Hooks") {
+  @Intro(title: "Meet Hooks API") {
+    A SwiftUI implementation of React Hooks. Enhances reusability of stateful logic and gives state and lifecycle to function view.
+  }
+  
+  @Chapter(name: "UseHooks") {
+    Explore the basics of creating a new feature in the Hook.
+    
+    @Image(source: chapter1-slothcreatorEssentials.png, alt: "")
+    
+    @TutorialReference(tutorial: "doc:UseHooks")
+
+  }
+  
+  @Chapter(name: "UseState") {
+    Explore the basics of creating a useState in the Hook.
+    
+    @Image(source: chapter1-slothcreatorEssentials.png, alt: "")
+    
+    @TutorialReference(tutorial: "doc:UseState")
+  }
+}

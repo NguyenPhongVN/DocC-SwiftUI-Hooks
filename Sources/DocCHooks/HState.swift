@@ -15,7 +15,7 @@ import Hooks
 ///
 /// It's similar @State in swiftUI.
 ///
-/// On the other hand, it's similar ``useState(_:)`` and ``useState(_:)``.
+/// On the other hand, it's similar `useState(_:)` and `useState(_:)`.
 @propertyWrapper
 public struct HState<Node> {
   
@@ -96,7 +96,7 @@ public struct HState<Node> {
 ///
 /// It's similar @State in swiftUI but it have function ``MHState/onChange(_:)`` and ``MHState/send(_:)``.
 ///
-/// On the other hand, it's similar ``useState()`` and ``useState { }``.
+/// On the other hand, it's similar `useState()` and `useState { }`.
 @propertyWrapper
 public struct MHState<Node> {
   

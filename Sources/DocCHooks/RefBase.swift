@@ -1,21 +1,22 @@
 import Foundation
+import Hooks
 
 open class RefBase {}
 
 open class AnyRef<Value>: RefBase {
   
-  private let _value = UnsafeMutablePointer<Value>.allocate(capacity: 1)
+  private var _value: RefObject<Value>
   
   public init(value: Value) {
-    self._value.pointee = value
+    self._value = RefObject(value)
   }
   
   open var value: Value {
     get {
-      _value.pointee
+      _value.current
     }
     set {
-      _value.pointee = newValue
+      _value.current = newValue
     }
   }
   

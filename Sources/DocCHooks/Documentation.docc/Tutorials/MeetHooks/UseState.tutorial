@@ -1,0 +1,81 @@
+@Tutorial(time: 10) {
+  @Intro(title: "UseState") {
+    This tutorial guides you through building Basic Logic
+    @Image(source: creating-intro.png, alt: "")
+  }
+  @Section(title: "Basic Logic") {
+    @ContentAndMedia {
+      Basic logic using hooks api
+      
+      @Image(source: 01-creating-section2.png, alt: "")
+    }
+    
+    @Steps {
+      @Step {
+        Create object model todo.
+        
+        @Code(name: "Examples.swift", file: 01-creating-code-02-01.swift) {
+          @Image(source: preview-01-creating-code-02-01.png, alt: "")
+        }
+      }
+      
+      @Step {
+        Create mock data.
+        
+        @Code(name: "Examples.swift", file: 01-creating-code-02-02.swift) {
+          @Image(source: preview-01-creating-code-02-01.png, alt: "")
+        }
+      }    
+      
+      @Step {
+        Import the `Hooks` package.
+        
+        @Code(name: "Examples.swift", file: 01-creating-code-02-03.swift) {
+          @Image(source: preview-01-creating-code-02-01.png, alt: "")
+        }
+      }    
+      
+      @Step {
+        Delete the template `Text` view, then add a new `VStack` with trailing padding.
+        
+        @Code(name: "Examples.swift", file: 01-creating-code-02-04.swift) {
+          @Image(source: preview-01-creating-code-02-04.png, alt: "")
+        }
+      }    
+      
+      @Step {
+        Add a `SlothView`. Specify the `sloth` state variable for the view's `sloth` binding.
+        
+        @Code(name: "Examples.swift", file: 01-creating-code-02-05.swift) {
+          @Image(source: preview-01-creating-code-02-04.png, alt: "")
+        }
+      }    
+      
+      @Step {
+        Add a `PowerPicker`. Specify the `sloth`'s `power` for the picker view's `power` binding.
+        
+        @Code(name: "Examples.swift", file: 01-creating-code-02-06.swift) {
+          @Image(source: preview-01-creating-code-02-04.png, alt: "")
+        }
+      }    
+      
+      The following steps display your customized sloth view in the SwiftUI preview.
+      
+      @Step {
+        Add the `sloth` parameter to initialize the `CustomizedSlothView` in the preview provider, and pass a new `Sloth` instance for the value.
+        
+        @Code(name: "Examples.swift", file: 01-creating-code-02-07.swift) {
+          @Image(source: preview-01-creating-code-02-07.png, alt: "")
+        }
+      }
+      
+      @Step {
+        Set the preview provider sloth's `name` to `"Super Sloth"`, `color` to `.blue`, and `power` to `.ice`.
+        
+        @Code(name: "Examples.swift", file: 01-creating-code-02-08.swift) {
+          @Image(source: preview-01-creating-code-02-08.png, alt: "")
+        }
+      }
+    }
+  }
+}
