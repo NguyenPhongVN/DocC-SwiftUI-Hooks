@@ -1,6 +1,4 @@
 import SwiftUI
-import IdentifiedCollections
-import Hooks
 
 private struct Todo: Hashable, Identifiable {
   var id: UUID
@@ -34,22 +32,30 @@ extension IdentifiedArray where ID == Todo.ID, Element == Todo {
   ]
 }
 
-/// We use `useFlagUpdated` to cache key update in` HookUpdateStrategy`. if condition == true, flag will toggle, and return new key to  HookUpdateStrategy.
-/// It wil call once time when init, and then if only condition == true, hook will updates state.
-public func useFlagUpdated(_ condition: Bool? = false) -> Bool {
-  @HState var flag = false
-  if condition == true {
-    flag.toggle()
-  }
-  return flag
-}
-
 struct ExamplesView: View {
   var body: some View {
     HookScope {
+      
       @HState
       var todos: IdentifiedArrayOf<Todo> = .mock
+      
+      @HState
+      var iscollapsedAll = true
+      
+      @HState
+      var text = ""
+      
       List {
+        HStack {
+          TextField("name", text: $text)
+          Button {
+            todos.append(Todo(id: UUID(), text: text, isCompleted: false))
+            text = ""
+          } label: {
+            Image(systemName: "plus")
+          }
+          .disabled(text.isEmpty)
+        }
         ForEach(todos) { item in
           HookScope {
             @HState var iscollapsed = true
@@ -58,11 +64,17 @@ struct ExamplesView: View {
               try? await Task.sleep(seconds: 2)
               return Int.random(in: 1...100)
             }
+            
             let _ = useLayoutEffect(.preserved(by: iscollapsed)) {
               if !iscollapsed {
                 Task { await perform() }
                 print("Call Perform")
               }
+              return nil
+            }
+            
+            let _ = useLayoutEffect(.preserved(by: iscollapsedAll)) {
+              iscollapsed = iscollapsedAll
               return nil
             }
             
@@ -89,6 +101,11 @@ struct ExamplesView: View {
           }
         }
       }
+      .navigationBarItems(
+        trailing:
+          Toggle("collapsed", isOn: $iscollapsedAll)
+          .toggleStyle(.switch)
+      )
     }
   }
 }
