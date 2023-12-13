@@ -1,10 +1,11 @@
 import SwiftUI
 import Hooks
 import IdentifiedCollections
+import MCombineRequest
 
 // MARK: Model
 
-private struct Todo: Hashable, Identifiable {
+private struct Todo: Codable, Hashable, Identifiable {
   var id: UUID
   var text: String
   var isCompleted: Bool
@@ -23,35 +24,12 @@ private struct Stats: Equatable {
   let percentCompleted: Double
 }
 
-// MARK: Mock Data
-extension IdentifiedArray where ID == Todo.ID, Element == Todo {
-  static let mock: Self = [
-    Todo(
-      id: UUID(),
-      text: "A",
-      isCompleted: false
-    ),
-    Todo(
-      id: UUID(),
-      text: "B",
-      isCompleted: true
-    ),
-    Todo(
-      id: UUID(),
-      text: "C",
-      isCompleted: false
-    ),
-    Todo(
-      id: UUID(),
-      text: "D",
-      isCompleted: true
-    ),
-  ]
-}
+// MARK: View
 
-private typealias TodoContext = HookContext<Binding<IdentifiedArrayOf<Todo>>>
+private typealias TodoContext = Hooks.Context<Binding<IdentifiedArrayOf<Todo>>>
 
 private struct TodoStats: View {
+  
   var body: some View {
     HookScope {
       
@@ -92,23 +70,24 @@ private struct TodoFilters: View {
   let filter: Binding<Filter>
   
   var body: some View {
-    Picker("Filter", selection: filter) {
-      ForEach(Filter.allCases, id: \.self) { filter in
-        switch filter {
-          case .all:
-            Text("All")
-          case .completed:
-            Text("Completed")
-          case .uncompleted:
-            Text("Uncompleted")
+    HookScope {
+      Picker("Filter", selection: filter) {
+        ForEach(Filter.allCases, id: \.self) { filter in
+          switch filter {
+            case .all:
+              Text("All")
+            case .completed:
+              Text("Completed")
+            case .uncompleted:
+              Text("Uncompleted")
+          }
         }
       }
-    }
-    .padding(.vertical)
-    
+      .padding(.vertical)
 #if !os(watchOS)
-    .pickerStyle(.segmented)
+      .pickerStyle(.segmented)
 #endif
+    }
   }
 }
 
@@ -123,15 +102,27 @@ private struct TodoCreator: View {
       
       @HState
       var text = ""
-      
       HStack {
         TextField("Enter your todo", text: $text)
 #if os(iOS) || os(macOS)
           .textFieldStyle(.plain)
 #endif
         Button {
-          value.wrappedValue.append(Todo(id: UUID(), text: text, isCompleted: false))
-          text = ""
+          Task {
+            let data = try await MRequest {
+              RUrl("http://127.0.0.1:8080")
+                .withPath("todos")
+              Rbody(Todo(id: UUID(), text: text, isCompleted: false))
+              RMethod(.post)
+              REncoding(JSONEncoding.default)
+            }
+              .printCURLRequest()
+              .data
+            text = ""
+            if let model = data.toModel(Todo.self) {
+              value.wrappedValue.updateOrAppend(model)
+            }
+          }
         } label: {
           Text("Add")
             .bold()
@@ -169,22 +160,39 @@ private struct TodoItem: View {
 #endif
         }
         .padding(.vertical, 4)
+        .onChange(of: todo.wrappedValue) { (value: Todo) in
+          Task {
+            let data: Data = try await MRequest {
+              RUrl("http://127.0.0.1:8080")
+                .withPath("todos")
+                .withPath(value.id.uuidString)
+              Rbody(value)
+              RMethod(.post)
+              REncoding(JSONEncoding.default)
+            }
+              .printCURLRequest()
+              .data
+            if let model = data.toModel(Todo.self) {
+              todos.wrappedValue.updateOrAppend(model)
+            }
+          }
+        }
       }
     }
   }
 }
 
-struct TodoHookBasic: View {
+struct TodoHookNetwork: View {
   
+  @ViewBuilder
   var body: some View {
     HookScope {
       
       @HState
-      var todos = IdentifiedArrayOf<Todo>.mock
+      var todos = IdentifiedArrayOf<Todo>()
       
       @HState
       var filter = Filter.all
-
       
       let flag : [AnyHashable] = [todos, filter]
       
@@ -199,6 +207,27 @@ struct TodoHookBasic: View {
         }
       }
       
+      let (phase, refresher) = useAsyncPerform { () -> IdentifiedArrayOf<Todo> in
+        let request = MRequest {
+          RUrl("http://127.0.0.1:8080")
+            .withPath("todos")
+          RMethod(.get)
+        }
+        let data = try await request.data
+        let models = try? JSONDecoder().decode(IdentifiedArrayOf<Todo>.self, from: data)
+        return models ?? []
+      }
+      
+      let _ = useLayoutEffect(.preserved(by: phase.status)) {
+        switch phase {
+          case .success(let items):
+            todos = items
+          default:
+            break
+        }
+        return nil
+      }
+      
       TodoContext.Provider(value: $todos) {
         List {
           Section(header: Text("Information")) {
@@ -208,14 +237,47 @@ struct TodoHookBasic: View {
           Section(header: Text("Filters")) {
             TodoFilters(filter: $filter)
           }
-          ForEach(filteredTodos, id: \.id) { todo in
-            TodoItem(todoID: todo.id)
+          switch phase {
+            case .success:
+              ForEach(filteredTodos, id: \.id) { todo in
+                TodoItem(todoID: todo.id)
+              }
+              .onDelete { atOffsets in
+                for index in atOffsets {
+                  let todo = todos[index]
+                  Task {
+                    let data: Data = try await MRequest {
+                      RUrl("http://127.0.0.1:8080")
+                        .withPath("todos")
+                        .withPath(todo.id.uuidString)
+                      RMethod(.delete)
+                    }
+                      .printCURLRequest()
+                      .data
+                    if let model = data.toModel(Todo.self) {
+                      todos.remove(model)
+                    }
+                  }
+                }
+              }
+              .onMove { fromOffsets, toOffset in
+                // Move only in local
+                todos.move(fromOffsets: fromOffsets, toOffset: toOffset)
+              }
+            case .failure(let error):
+              Text(error.localizedDescription)
+            default:
+              ProgressView()
           }
-          .onDelete { atOffsets in
-            todos.remove(atOffsets: atOffsets)
+        }
+        .task {
+          Task { @MainActor in
+            await refresher()
           }
-          .onMove { fromOffsets, toOffset in
-            todos.move(fromOffsets: fromOffsets, toOffset: toOffset)
+        }
+        .refreshable {
+          Task { @MainActor in
+            await refresher()
           }
         }
         .listStyle(.sidebar)
@@ -236,6 +298,5 @@ struct TodoHookBasic: View {
 }
 
 #Preview {
-  NavigationView { TodoHookBasic() }
+  NavigationView { TodoHookNetwork() }
 }
-
