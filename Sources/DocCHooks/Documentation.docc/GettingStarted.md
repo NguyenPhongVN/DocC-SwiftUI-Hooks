@@ -8,7 +8,9 @@ A SwiftUI implementation of React Hooks. Enhances reusability of stateful logic 
 
 ## Overview
 
-SwiftUI Hooks is a SwiftUI implementation of React Hooks. Brings the state and lifecycle into the function view, without depending on elements that are only allowed to be used in struct views such as @State or @ObservedObject. It allows you to reuse stateful logic between views by building custom hooks composed with multiple hooks. Furthermore, hooks such as useEffect also solve the problem of lack of lifecycles in SwiftUI.
+SwiftUI Hooks là một phiên bản được dịch ra của React Hooks, hắn đưa State và lifecycle vào trong View mà không phụ thuộc vào các element chỉ được phép sử dụng trong struct View  như @State hoặc @ObservedObject.
+Hắn cho phép bạn sử dụng lại logic trạng thái giữa các View bằng cách xây dựng các hook (móc,gắn) tùy chỉnh được tạo bằng nhiều hook (móc,gắn).
+Hơn nữa, các hook như useEffect cũng giải quyết được vấn đề thiếu vòng đời trong SwiftUI.
 
 Code Sample
 
@@ -21,8 +23,8 @@ func useState<State>(_ initialState: State) -> Binding<State>
 func useState<State>(_ initialState: @escaping () -> State) -> Binding<State>
 ```
 
-A hook to use a Binding<State> wrapping current state to be updated by setting a new state to wrappedValue.
-Triggers a view update when the state has been changed.
+Một hook để sử dụng State current bao bọc  Binding<State> cần được cập nhật bằng cách đặt trạng thái mới thành wrappedValue.
+Kích hoạt cập nhật View khi State đã được thay đổi.
 
 ```swift
 
@@ -34,7 +36,7 @@ Button("Increment") {
 
 ```
 
-If the initial state is the result of an expensive computation, you may provide a closure instead. The closure will be executed once, during the initial render.
+Nếu State ban đầu là kết quả của một phép tính, thay vào đó bạn có thể cung cấp một closure. Việc đóng sẽ được thực hiện một lần, trong lần render đầu tiên.
 
 ```swift
 let count = useState {
@@ -57,9 +59,10 @@ _ effect: @escaping () -> (() -> Void)?
 )
 ```
 
-A hook to use a side effect function that is called the number of times according to the strategy specified with updateStrategy.
-Optionally the function can be cancelled when this hook is disposed or when the side-effect function is called again.
-Note that the execution is deferred until after ohter hooks have been updated.
+useEffect là một Hook cho phép bạn đồng bộ hóa một component với hệ thống bên ngoài.
+A hook to use a side effect function that is called the number of times according to the strategy specified with `updateStrategy`.
+Function này có thể bị hủy khi hook này được xử lý hoặc khi function side-effect được gọi lại.
+Lưu ý rằng việc thực hiện sau khi render View
 
 ```swift
 useEffect {
@@ -69,6 +72,11 @@ useEffect {
     print("Do cleanup")
   }
 }
+
+/// - Parameters:
+///   - updateStrategy: Một strategy that determines when to re-call the given side effect function.
+///   - effect: A closure that typically represents a side-effect.
+///             Nó có thể trả về một closure để thực hiện điều gì đó khi hook này được ngắt kết nối khỏi view hoặc khi hàm side-effect được gọi lại.
 
 ```
 
@@ -82,9 +90,9 @@ _ effect: @escaping () -> (() -> Void)?
 )
 ```
 
-A hook to use a side effect function that is called the number of times according to the strategy specified with updateStrategy.
-Optionally the function can be cancelled when this hook is unmount from the view tree or when the side-effect function is called again.
-The signature is identical to useEffect, but this fires synchronously when the hook is called.
+A hook to use a side effect function that is called the number of times according to the strategy specified with `updateStrategy`.
+Tùy chọn, function này có thể bị hủy khi hook này được ngắt kết nối khỏi tree view hoặc khi function side-effect được gọi lại.
+The signature này giống hệt với useEffect, nhưng signature này kích hoạt đồng bộ khi hook được gọi. 
 
 
 ```swift
@@ -104,7 +112,8 @@ _ makeValue: @escaping () -> Value
 ) -> Value
 ```
 
-A hook to use memoized value preserved until it is updated at the timing determined with given updateStrategy.
+A hook to use memoized value preserved until it is updated at the timing determined with given `updateStrategy`.
+lưu trữ kết quả tính toán
 
 
 ```swift
@@ -121,7 +130,8 @@ func useRef<T>(_ initialValue: T) -> RefObject<T>
 ```
 
 A hook to use a mutable ref object storing an arbitrary value.
-The essential of this hook is that setting a value to current doesn't trigger a view update.
+object `ref` có thể thay đổi lưu trữ một giá trị tùy ý.
+Điều cốt yếu của hook này là việc đặt giá trị thành `current` sẽ không kích hoạt update view.
 
 ```swift
 let value = useRef("text")  // RefObject<String>
@@ -142,7 +152,7 @@ initialState: State
 ```
 
 A hook to use the state returned by the passed reducer, and a dispatch function to send actions to update the state.
-Triggers a view update when the state has been changed.
+Kích hoạt update view khi state đã được thay đổi.
 
 ```swift
 enum Action {
@@ -178,7 +188,8 @@ _ operation: @escaping () async throws -> Output
 
 ```
 A hook to use the most recent phase of asynchronous operation of the passed function.
-The function will be performed at the first update and will be re-performed according to the given updateStrategy.
+The function will be performed at the first update and will be re-performed according to the given `updateStrategy`.
+Chức năng sẽ được thực hiện ở lần update đầu tiên và sẽ được thực hiện lại theo `updateStrategy` đã cho.
 
 ```swift
 let phase = useAsync(.once) {
@@ -199,6 +210,7 @@ _ operation: @escaping @MainActor () async throws -> Output
 
 ```
 A hook to use the most recent phase of the passed asynchronous operation, and a perform function to call the it at arbitrary timing.
+Bất đồng bộ và một hàm perform
 
 ```swift
 let (phase, perform) = useAsyncPerform {
@@ -217,7 +229,8 @@ _ makePublisher: @escaping () -> P
 
 ```
 A hook to use the most recent phase of asynchronous operation of the passed publisher.
-The publisher will be subscribed at the first update and will be re-subscribed according to the given updateStrategy.
+The publisher will be subscribed at the first update and will be re-subscribed according to the given `updateStrategy`.
+publisher sẽ được khởi tạo ở lần cập nhật đầu tiên và sẽ được re-subscribed theo `updateStrategy` nhất định.
 
 ```swift
 let phase = usePublisher(.once) {
@@ -233,7 +246,7 @@ _ makePublisher: @escaping () -> P
 ) -> (phase: AsyncPhase<P.Output, P.Failure>, subscribe: () -> Void)
 
 ```
-A hook to use the most recent phase of asynchronous operation of the passed publisher, and a subscribe function to subscribe to it at arbitrary timing.
+A hook to use the most recent phase of asynchronous operation of the passed publisher, and a `subscribe` function to subscribe to it at arbitrary timing.
 
 ```swift
 let (phase, subscribe) = usePublisherSubscribe {
@@ -248,6 +261,7 @@ func useEnvironment<Value>(_ keyPath: KeyPath<EnvironmentValues, Value>) -> Valu
 ```
 
 A hook to use environment value passed through the view tree without @Environment property wrapper.
+environment được truyền qua tree view mà không wrapper thuộc tính `@Environment`.
 
 ```swift
 let colorScheme = useEnvironment(\.colorScheme)  // ColorScheme
@@ -259,8 +273,8 @@ let colorScheme = useEnvironment(\.colorScheme)  // ColorScheme
 ```swift
 func useContext<T>(_ context: Context<T>.Type) -> T
 ```
-A hook to use current context value that is provided by Context<T>.Provider.
-The purpose is identical to use Context<T>.Consumer.
+A hook to use current context value that is provided by `Context<T>.Provider`.
+The purpose is identical to use `Context<T>.Consumer`.
 See Context section for more details.
 
 ```swift

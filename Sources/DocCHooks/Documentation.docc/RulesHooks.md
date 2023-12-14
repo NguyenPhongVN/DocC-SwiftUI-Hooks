@@ -9,13 +9,15 @@ Hooks are Swift function programming, but you need to follow two rules when usin
 ## Overview
 
 In order to take advantage of the wonderful interface of Hooks, the same rules that React hooks has must also be followed by SwiftUI Hooks.
+Để tận dụng được interface tuyệt vời của Hooks, SwiftUI Hooks cũng phải tuân theo các rules tương tự mà React hooks đưa ra.
 
-[Disclaimer]: These rules are not technical constraints specific to SwiftUI Hooks, but are necessary based on the design of the Hooks itself. You can see here to know more about the rules defined for React Hooks.
+[Disclaimer]: Các quy tắc này không phải là các ràng buộc kỹ thuật dành riêng cho SwiftUI Hooks, nhưng cần thiết dựa trên thiết kế của Hooks.Bạn có thể xem tại đây (https://legacy.reactjs.org/docs/hooks-rules.html) để biết thêm về các quy tắc được xác định cho React Hooks.
 
-* In -Onone builds, if a violation against this rules is detected, it asserts by an internal sanity check to help the developer notice the mistake in the use of hooks. However, hooks also has disableHooksRulesAssertion modifier in case you want to disable the assertions.
+* In -Onone builds, if a violation against this rules is detected, it asserts by an internal sanity check to help the developer notice the mistake in the use of hooks. However, hooks also has `disableHooksRulesAssertion` modifier in case you want to disable the assertions.
 
 ### Only Call Hooks at the Function Top Level
-Do not call Hooks inside conditions or loops. The order in which hook is called is important since Hooks uses LinkedList to keep track of its state.
+
+Không gọi Hooks bên trong điều kiện hoặc vòng lặp. Thứ tự hook được gọi rất quan trọng vì Hook sử dụng LinkedList (https://en.wikipedia.org/wiki/Linked_list) để theo dõi state của nó.
 
 ```swift
 @ViewBuilder
@@ -47,8 +49,7 @@ func counterButton() -> some View {
 
 ### Only Call Hooks from HookScope or HookView.hookBody
 
-In order to preserve the state, hooks must be called inside a HookScope.
-A view that conforms to the HookView protocol will automatically be enclosed in a HookScope.
+Để duy trì state, hook phải được gọi bên trong `HookScope`. view phù hợp với `HookView` protocol sẽ tự động được đặt trong `HookScope`.
 
 ```swift
 struct CounterButton: HookView {  // 🟢 `HookView` is used.

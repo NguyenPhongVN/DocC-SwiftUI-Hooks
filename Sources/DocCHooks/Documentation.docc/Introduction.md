@@ -8,11 +8,11 @@ A SwiftUI implementation of React Hooks. Enhances reusability of stateful logic 
 
 ## Overview
 
-SwiftUI Hooks is a SwiftUI implementation of React Hooks. Brings the state and lifecycle into the function view, without depending on elements that are only allowed to be used in struct views such as @State or @ObservedObject.
-It allows you to reuse stateful logic between views by building custom hooks composed with multiple hooks.
-Furthermore, hooks such as useEffect also solve the problem of lack of lifecycles in SwiftUI.
+SwiftUI Hooks là một phiên bản được dịch ra của React Hooks, hắn đưa State và lifecycle vào trong View mà không phụ thuộc vào các Element chỉ được phép sử dụng trong struct View  như @State hoặc @ObservedObject.
+Nó cho phép bạn sử dụng lại logic trạng thái giữa các View bằng cách xây dựng các hook (móc) tùy chỉnh được tạo bằng nhiều hook (móc).
+Hơn nữa, các hook như useEffect cũng giải quyết được vấn đề thiếu vòng đời trong SwiftUI.
 
-The API and behavioral specs of SwiftUI Hooks are entirely based on React Hooks, so you can leverage your knowledge of web applications to your advantage.
+API và behavioral specs (thông số kỹ thuật hành vi) của SwiftUI Hook hoàn toàn dựa trên React Hook, vì vậy bạn có thể tận dụng kiến thức về ứng dụng web để làm lợi thế cho mình.
 
 ### Examples
 
